@@ -1,6 +1,8 @@
 import numpy
 import sys
 
+# -*- coding: utf-8 -*-
+
 params = dict()
 ewordtypes = set()
 fwordtypes = set()
@@ -72,7 +74,7 @@ if __name__ == "__main__":
 
 	trainfile = args[0]
 	#read in file
-	with open("train.zh-en") as file:
+	with open(trainfile) as file:
 		for line in file:
 			e = line.strip().split('\t')[1]
 			f = line.strip().split('\t')[0]

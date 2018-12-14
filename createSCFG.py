@@ -56,20 +56,22 @@ def subtractrules(rule, start, end, coalignments):
 	pass
 
 
-def printrules(rules):
-	for rule in rules:
-		eoutput = ''
-		foutput = ''
-		for i in range(len(rule['e'])):
-			eoutput += rule['e'][i]
-			if i != len(rule['e']) - 1:
-				eoutput += ' '
-		for i in range(len(rule['f'])):
-			foutput += rule['f'][i]
-			if i != len(rule['f']) - 1:
-				foutput += ' '
+def printrules(rules, file = None):
+	with open(file, 'w') as outfile:
 
-		print("* -> <{},{}>".format(foutput, eoutput))
+		for rule in rules:
+			eoutput = ''
+			foutput = ''
+			for i in range(len(rule['e'])):
+				eoutput += rule['e'][i]
+				if i != len(rule['e']) - 1:
+					eoutput += ' '
+			for i in range(len(rule['f'])):
+				foutput += rule['f'][i]
+				if i != len(rule['f']) - 1:
+					foutput += ' '
+
+			outfile.write("* -> <{},{}>".format(foutput, eoutput))
 
 if __name__ == "__main__":
 	args = sys.argv[1:]
@@ -81,8 +83,10 @@ if __name__ == "__main__":
 	trainfilepath = args[0]
 	alignfilepath = args[1]
 
+	progress = 0
 	with open(trainfilepath) as trainfile, open(alignfilepath) as alignfile:
 		for line in trainfile:
+			print(progress)
 			ewords = line.strip().split('\t')[1].split()
 			fwords = line.strip().split('\t')[0].split()
 			ewords.append('NULL')
@@ -140,5 +144,6 @@ if __name__ == "__main__":
 									newrule['e'].append(ewords[wordpos])
 							if(dedup(newrule)):
 								rules.append(newrule)
-	printrules(rules)
+			progress = progress + 1
+	printrules(rules, "SCFGbackup.txt")
 
